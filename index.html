@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тёте Александре — С 8 марта!</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400;1,600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg: #0d0810;
+  --bg2: #160e20;
+  --gold: #e8c97a;
+  --gold2: #c9975a;
+  --lilac: #c9a8f0;
+  --lilac-dim: #7a5aaa;
+  --cream: #fdf5e8;
+  --glow: rgba(232,201,122,0.18);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--cream);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.stars-layer {
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(100,60,160,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(180,130,80,0.08) 0%, transparent 50%),
+    #0d0810;
+}
+.stars-layer canvas { position:absolute;inset:0;width:100%;height:100%; }
+
+.page {
+  position: relative; z-index: 1;
+  max-width: 680px; margin: 0 auto;
+  padding: 0 24px 100px;
+}
+
+/* ── HEADER ── */
+.header {
+  text-align: center;
+  padding: 70px 0 30px;
+}
+.header-sup {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; letter-spacing: 7px;
+  text-transform: uppercase; color: var(--gold);
+  opacity: 0; animation: fadeUp 1s 0.3s forwards;
+  margin-bottom: 22px; display: block;
+}
+.header-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(44px, 11vw, 82px);
+  font-weight: 600; color: var(--cream);
+  line-height: 1; letter-spacing: 3px;
+  opacity: 0; animation: fadeUp 1s 0.6s forwards;
+  text-shadow: 0 0 60px rgba(232,201,122,0.25);
+}
+.header-sub {
+  font-size: 18px; font-style: italic;
+  color: var(--lilac); margin-top: 12px;
+  opacity: 0; animation: fadeUp 1s 0.9s forwards;
+  letter-spacing: 2px;
+}
+
+/* ── PHOTO ── */
+.photo-wrap {
+  margin: 50px auto;
+  max-width: 300px;
+  position: relative;
+  opacity: 0; animation: fadeUp 1s 1.2s forwards;
+}
+.photo-inner {
+  position: relative;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--gold), var(--lilac-dim), var(--gold2));
+}
+.photo-inner img {
+  width: 100%; height: 360px;
+  object-fit: cover; object-position: top center;
+  display: block;
+  filter: sepia(0.1) contrast(1.05);
+}
+.photo-glow {
+  position: absolute; inset: -20px;
+  background: radial-gradient(ellipse, rgba(232,201,122,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.scissors-deco {
+  position: absolute; top: -18px; right: -18px;
+  font-size: 34px;
+  filter: drop-shadow(0 0 8px rgba(232,201,122,0.5));
+  animation: rotateSciss 6s ease-in-out infinite;
+}
+@keyframes rotateSciss {
+  0%,100% { transform: rotate(-10deg); }
+  50%      { transform: rotate(10deg); }
+}
+
+/* ── LETTER ── */
+.letter {
+  margin: 20px 0 60px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(232,201,122,0.15);
+  border-left: 3px solid var(--gold);
+  padding: 40px 45px;
+  opacity: 0; transform: translateY(30px);
+  transition: all 0.9s ease;
+}
+.letter.vis { opacity:1; transform:translateY(0); }
+.letter-from {
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: 5px;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 22px;
+}
+.letter-body {
+  font-size: 19px; line-height: 2; color: rgba(253,245,232,0.88);
+}
+.letter-body p { margin-bottom: 14px; }
+.letter-body em { color: var(--gold); font-style: italic; }
+.letter-sig {
+  margin-top: 28px;
+  font-style: italic; font-size: 22px;
+  color: var(--lilac); text-align: right;
+}
+
+/* ── CANDLES SECTION ── */
+.candles-section {
+  margin: 0 0 60px;
+  opacity: 0; transform: translateY(30px);
+  transition: all 0.9s ease;
+}
+.candles-section.vis { opacity:1; transform:translateY(0); }
+
+.candles-title {
+  font-family: 'Cinzel', serif;
+  font-size: 20px; letter-spacing: 3px;
+  text-align: center; color: var(--gold);
+  margin-bottom: 10px;
+}
+.candles-hint {
+  text-align: center; font-style: italic;
+  color: rgba(201,168,240,0.7); font-size: 15px;
+  margin-bottom: 40px; letter-spacing: 1px;
+}
+
+.candles-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(16px, 4vw, 36px);
+  flex-wrap: wrap;
+  padding: 30px 20px 50px;
+  position: relative;
+}
+
+.candles-row::after {
+  content: '';
+  position: absolute;
+  bottom: 20px; left: 5%; right: 5%; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(232,201,122,0.3) 20%, rgba(232,201,122,0.5) 50%, rgba(232,201,122,0.3) 80%, transparent);
+  border-radius: 50%;
+}
+
+.candle-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.candle-wrap .blow-hint {
+  font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(232,201,122,0.5);
+  margin-bottom: 8px;
+  opacity: 0; transition: opacity 0.3s;
+  font-family: 'Cinzel', serif;
+}
+.candle-wrap:hover .blow-hint { opacity:1; }
+
+.flame-wrap {
+  position: relative;
+  width: 28px; height: 60px;
+  display: flex; align-items: flex-end; justify-content: center;
+  margin-bottom: -2px;
+}
+.flame {
+  position: absolute;
+  bottom: 0;
+  width: 18px; height: 38px;
+  background: radial-gradient(ellipse at 50% 85%, #fff7a0 0%, #ffcc44 35%, #ff7700 65%, rgba(200,50,0,0.3) 100%);
+  border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+  transform-origin: bottom center;
+  animation: flicker 1.8s ease-in-out infinite;
+  filter: blur(0.3px);
+  box-shadow: 0 0 12px 4px rgba(255,180,0,0.5), 0 0 30px 8px rgba(255,120,0,0.25);
+}
+.flame-inner {
+  position: absolute; bottom: 4px;
+  width: 8px; height: 16px;
+  background: radial-gradient(ellipse at 50% 80%, #fff 0%, #ffe88a 60%, transparent 100%);
+  border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+  animation: flicker 1.4s ease-in-out infinite reverse;
+}
+.flame-glow {
+  position: absolute; bottom: -5px;
+  width: 40px; height: 40px;
+  background: radial-gradient(circle, rgba(255,200,50,0.35) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: glowPulse 2s ease-in-out infinite;
+}
+@keyframes flicker {
+  0%,100% { transform: scaleX(1) scaleY(1) rotate(-1deg); }
+  25%      { transform: scaleX(0.95) scaleY(1.05) rotate(1.5deg); }
+  50%      { transform: scaleX(1.05) scaleY(0.98) rotate(-0.5deg); }
+  75%      { transform: scaleX(0.98) scaleY(1.03) rotate(2deg); }
+}
+@keyframes glowPulse {
+  0%,100% { opacity:0.8; transform: scale(1); }
+  50%      { opacity:1; transform: scale(1.2); }
+}
+
+.candle-body {
+  width: 34px;
+  border-radius: 3px 3px 2px 2px;
+  position: relative;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+.candle-body::after {
+  content: '';
+  position: absolute; top: 0; left: 30%; right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.12);
+}
+.candle-drip {
+  position: absolute; top: -4px; left: 50%;
+  transform: translateX(-50%);
+  width: 10px; height: 10px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  opacity: 0.7;
+}
+.wick {
+  width: 2px; height: 10px;
+  background: linear-gradient(to top, #888, #333);
+  border-radius: 2px;
+  margin-bottom: -1px;
+}
+
+.candle-wrap.blown .flame { display: none; }
+.candle-wrap.blown .flame-glow { display: none; }
+.candle-wrap.blown .flame-inner { display: none; }
+
+.smoke-particle {
+  position: absolute;
+  bottom: 100%;
+  left: 50%; 
+  width: 6px; height: 6px;
+  background: rgba(200,200,255,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: smokeFly 2s ease-out forwards;
+}
+@keyframes smokeFly {
+  0%   { transform: translate(-50%, 0) scale(0.5); opacity: 0.7; }
+  100% { transform: translate(calc(-50% + var(--dx)), -80px) scale(3); opacity: 0; }
+}
+
+.wish-reveal {
+  margin-top: 30px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(232,201,122,0.2);
+  padding: 30px 35px;
+  display: none;
+  animation: fadeUp 0.7s ease forwards;
+  position: relative;
+  overflow: hidden;
+}
+.wish-reveal::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(232,201,122,0.06) 0%, transparent 60%);
+}
+.wish-reveal.show { display: block; }
+.wish-icon { font-size: 36px; margin-bottom: 12px; display: block; text-align: center; }
+.wish-title {
+  font-family: 'Cinzel', serif; font-size: 15px;
+  letter-spacing: 4px; color: var(--gold);
+  text-align: center; margin-bottom: 14px;
+  text-transform: uppercase;
+}
+.wish-text {
+  font-size: 18px; line-height: 1.9; font-style: italic;
+  color: rgba(253,245,232,0.9); text-align: center;
+}
+
+.finale {
+  display: none;
+  text-align: center;
+  padding: 50px 20px;
+  animation: fadeUp 1s ease forwards;
+}
+.finale.show { display: block; }
+.finale-big {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(28px, 7vw, 52px);
+  color: var(--gold);
+  line-height: 1.2; margin-bottom: 20px;
+  text-shadow: 0 0 40px rgba(232,201,122,0.4);
+}
+.finale-text {
+  font-size: 20px; font-style: italic;
+  color: var(--lilac); line-height: 1.8;
+  max-width: 480px; margin: 0 auto 30px;
+}
+.finale-flowers { font-size: 40px; letter-spacing: 10px; animation: floatAll 2s ease-in-out infinite; }
+@keyframes floatAll {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+.candle-progress {
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 12px; letter-spacing: 4px;
+  color: rgba(232,201,122,0.5);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* ── WISH BUILDER (from sister's code, restyled) ── */
+.builder-section {
+  margin: 0 0 60px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(232,201,122,0.15);
+  border-left: 3px solid var(--lilac);
+  padding: 40px 45px;
+  opacity: 0; transform: translateY(30px);
+  transition: all 0.9s ease;
+}
+.builder-section.vis { opacity:1; transform:translateY(0); }
+
+.builder-label {
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: 5px;
+  text-transform: uppercase; color: var(--lilac);
+  margin-bottom: 8px;
+}
+.builder-hint {
+  font-size: 15px; font-style: italic;
+  color: rgba(201,168,240,0.6);
+  margin-bottom: 28px; letter-spacing: 1px;
+}
+
+.wish-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.chip {
+  padding: 9px 20px;
+  border: 1px solid rgba(201,168,240,0.35);
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(253,245,232,0.65);
+  cursor: pointer;
+  transition: all 0.25s;
+  user-select: none;
+  border-radius: 2px;
+}
+
+.chip:hover {
+  border-color: var(--lilac);
+  color: var(--lilac);
+}
+
+.chip.active {
+  background: var(--lilac-dim);
+  border-color: var(--lilac);
+  color: var(--cream);
+  font-weight: 600;
+  box-shadow: 0 0 12px rgba(201,168,240,0.3);
+}
+
+.generated-wish {
+  min-height: 70px;
+  padding: 22px 25px;
+  background: rgba(201,168,240,0.06);
+  border-left: 3px solid var(--lilac-dim);
+  font-size: 18px; font-style: italic;
+  color: rgba(253,245,232,0.88);
+  line-height: 1.85;
+  transition: all 0.4s;
+  letter-spacing: 0.3px;
+}
+
+/* Divider */
+.divider {
+  text-align: center; margin: 40px 0;
+  color: rgba(232,201,122,0.25);
+  font-size: 18px; letter-spacing: 12px;
+}
+
+.reveal { opacity:0; transform:translateY(30px); transition: all 0.9s ease; }
+.reveal.vis { opacity:1; transform:translateY(0); }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="stars-layer"><canvas id="starsCanvas"></canvas></div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="header-sup">8 марта · с любовью</span>
+    <h1 class="header-name">Александра</h1>
+    <p class="header-sub">дорогая тётя</p>
+  </div>
+
+  <!-- PHOTO -->
+  <div class="photo-wrap">
+    <div class="photo-inner">
+      <img src="te.png" alt="Тётя Александра">
+    </div>
+    <div class="photo-glow"></div>
+    <div class="scissors-deco">✂️</div>
+  </div>
+
+  <div class="divider">· · · ✦ · · ·</div>
+
+  <!-- LETTER -->
+  <div class="letter reveal" id="r1">
+    <p class="letter-from">Письмо для тебя</p>
+    <div class="letter-body">
+      <p>Дорогая тётя Александра,</p>
+      <p>Ты — человек, который умеет <em>делать людей красивее</em>. Снаружи — своими руками. Внутри — своей добротой.</p>
+      <p>Ты приходишь — и сразу теплеет. Это <em>редкий дар</em>, и он весь — твой.</p>
+      <p>Пусть этот весенний день будет таким же <em>светлым, как ты сама.</em></p>
+    </div>
+    <p class="letter-sig">С любовью ❤️</p>
+  </div>
+
+  <div class="divider">· · · ✦ · · ·</div>
+
+  <!-- CANDLES -->
+  <div class="candles-section reveal" id="r2">
+    <h2 class="candles-title">Задуй свечу</h2>
+    <p class="candles-hint">Каждая свеча — пожелание. Кликни на огонёк, чтобы задуть 🕯️</p>
+
+    <p class="candle-progress" id="progressText">0 из 5 задуто</p>
+
+    <div class="candles-row" id="candlesRow"></div>
+
+    <div class="wish-reveal" id="wishReveal">
+      <span class="wish-icon" id="wishIcon">✨</span>
+      <p class="wish-title" id="wishTitle">Пожелание</p>
+      <p class="wish-text" id="wishText"></p>
+    </div>
+
+    <div class="finale" id="finale">
+      <div class="finale-big">С 8 марта,<br>тётя Александра!</div>
+      <p class="finale-text">Все пять пожеланий теперь твои — пусть каждое сбудется в этом году</p>
+      <div class="finale-flowers">🌸 💜 🌷 ✨ 🌸</div>
+    </div>
+  </div>
+
+  <div class="divider">· · · ✦ · · ·</div>
+
+  <!-- WISH BUILDER -->
+  <div class="builder-section reveal" id="r3">
+    <p class="builder-label">✦ Составь своё поздравление</p>
+    <p class="builder-hint">Выбери слова — и получится твоё особенное пожелание</p>
+    <div class="wish-chips">
+      <div class="chip" onclick="toggleChip(this, 'счастья')">Счастья</div>
+      <div class="chip" onclick="toggleChip(this, 'любви')">Любви</div>
+      <div class="chip" onclick="toggleChip(this, 'здоровья')">Здоровья</div>
+      <div class="chip" onclick="toggleChip(this, 'успеха')">Успеха</div>
+      <div class="chip" onclick="toggleChip(this, 'красоты')">Красоты</div>
+      <div class="chip" onclick="toggleChip(this, 'радости')">Радости</div>
+      <div class="chip" onclick="toggleChip(this, 'тепла')">Тепла</div>
+      <div class="chip" onclick="toggleChip(this, 'вдохновения')">Вдохновения</div>
+    </div>
+    <div class="generated-wish" id="generatedWish">
+      Выбери слова выше — и появится твоё пожелание ✨
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── STARS ──
+const sc = document.getElementById('starsCanvas');
+const sx = sc.getContext('2d');
+sc.width = window.innerWidth; sc.height = window.innerHeight;
+window.addEventListener('resize', () => { sc.width = window.innerWidth; sc.height = window.innerHeight; drawStars(); });
+function drawStars() {
+  sx.clearRect(0,0,sc.width,sc.height);
+  for(let i=0;i<160;i++){
+    const x=Math.random()*sc.width, y=Math.random()*sc.height;
+    const r=Math.random()*1.2;
+    sx.beginPath(); sx.arc(x,y,r,0,Math.PI*2);
+    sx.fillStyle=`rgba(255,255,230,${Math.random()*0.5+0.1})`; sx.fill();
+  }
+}
+drawStars();
+
+// ── SCROLL REVEAL ──
+const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('vis'); }), {threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// ── CANDLES DATA ──
+const candlesData = [
+  { color: '#e8a0d0', drip: '#d070b0', icon: '🌸', title: 'Здоровье', wish: 'Желаю тебе крепкого здоровья — чтобы сил хватало на всё, что ты любишь, и ещё немного сверху.', height: 110 },
+  { color: '#c9a8f0', drip: '#9b70d0', icon: '💜', title: 'Счастье',  wish: 'Пусть счастье живёт у тебя дома — каждое утро, каждый вечер, без выходных.', height: 130 },
+  { color: '#f0e080', drip: '#d0b840', icon: '✨', title: 'Удача',    wish: 'Пусть всё задуманное сбывается, а всё хорошее случается неожиданно и вовремя.', height: 150 },
+  { color: '#a0d8b0', drip: '#60a870', icon: '🌷', title: 'Любовь',  wish: 'Пусть рядом всегда будут люди, которые ценят и любят тебя — настоящую.', height: 125 },
+  { color: '#f0b080', drip: '#d07840', icon: '🌟', title: 'Радость', wish: 'Пусть каждый день найдётся повод улыбнуться — пусть даже маленький, но твой собственный.', height: 105 }
+];
+
+let blownCount = 0;
+
+function buildCandles() {
+  const row = document.getElementById('candlesRow');
+  row.innerHTML = '';
+  candlesData.forEach((c, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'candle-wrap';
+    wrap.dataset.index = i;
+    wrap.innerHTML = `
+      <span class="blow-hint">задуй</span>
+      <div class="flame-wrap">
+        <div class="flame-glow"></div>
+        <div class="flame"><div class="flame-inner"></div></div>
+      </div>
+      <div class="wick"></div>
+      <div class="candle-body" style="height:${c.height}px;background:linear-gradient(to right, ${lighten(c.color)}, ${c.color}, ${darken(c.color)})">
+        <div class="candle-drip" style="background:${c.drip}"></div>
+      </div>
+    `;
+    wrap.addEventListener('click', () => blowCandle(wrap, i));
+    wrap.style.opacity = '0';
+    wrap.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      wrap.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      wrap.style.opacity = '1';
+      wrap.style.transform = 'translateY(0)';
+    }, 300 + i * 120);
+    row.appendChild(wrap);
+  });
+}
+
+function lighten(hex) {
+  const c = parseInt(hex.slice(1),16);
+  const r=Math.min(255,((c>>16)&255)+40), g=Math.min(255,((c>>8)&255)+40), b=Math.min(255,(c&255)+40);
+  return `rgb(${r},${g},${b})`;
+}
+function darken(hex) {
+  const c = parseInt(hex.slice(1),16);
+  const r=Math.max(0,((c>>16)&255)-30), g=Math.max(0,((c>>8)&255)-30), b=Math.max(0,(c&255)-30);
+  return `rgb(${r},${g},${b})`;
+}
+
+function blowCandle(wrap, idx) {
+  if (wrap.classList.contains('blown')) return;
+  wrap.classList.add('blown');
+  blownCount++;
+
+  const fw = wrap.querySelector('.flame-wrap');
+  for(let i=0;i<8;i++){
+    setTimeout(() => {
+      const s = document.createElement('div');
+      s.className = 'smoke-particle';
+      s.style.setProperty('--dx', `${(Math.random()-0.5)*30}px`);
+      s.style.left = '50%';
+      fw.appendChild(s);
+      setTimeout(() => s.remove(), 2000);
+    }, i * 60);
+  }
+
+  document.getElementById('progressText').textContent = `${blownCount} из 5 задуто`;
+
+  const data = candlesData[idx];
+  const wr = document.getElementById('wishReveal');
+  document.getElementById('wishIcon').textContent = data.icon;
+  document.getElementById('wishTitle').textContent = data.title;
+  document.getElementById('wishText').textContent = data.wish;
+  wr.classList.remove('show');
+  void wr.offsetWidth;
+  wr.classList.add('show');
+
+  if (blownCount === 5) {
+    setTimeout(() => {
+      wr.classList.remove('show');
+      document.getElementById('finale').classList.add('show');
+      launchSparkles();
+    }, 2200);
+  }
+}
+
+function launchSparkles() {
+  const emojis = ['✨','🌸','💜','🌟','🌷','💫','🎉'];
+  for(let i=0;i<35;i++){
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.style.cssText = `
+        position:fixed;
+        left:${Math.random()*100}%;
+        top:${30+Math.random()*40}%;
+        font-size:${16+Math.random()*20}px;
+        pointer-events:none; z-index:9999;
+        transition: top 3s ease, opacity 3s;
+        opacity:1;
+      `;
+      el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      document.body.appendChild(el);
+      requestAnimationFrame(() => { el.style.top = '-10%'; el.style.opacity = '0'; });
+      setTimeout(() => el.remove(), 3200);
+    }, i * 80);
+  }
+}
+
+buildCandles();
+
+// ── WISH BUILDER ──
+const selected = new Set();
+const wishes = {
+  счастья:     'пусть счастья будет столько, что хватит на всю жизнь',
+  любви:       'пусть тебя любят так, как ты того заслуживаешь',
+  здоровья:    'пусть здоровье никогда не подводит',
+  успеха:      'пусть каждое начинание приносит результат',
+  красоты:     'пусть красота — внутри и снаружи — только расцветает',
+  радости:     'пусть поводов улыбаться будет бесконечно много',
+  тепла:       'пусть рядом всегда будут тёплые, родные люди',
+  вдохновения: 'пусть каждое утро начинается с энергии и желания жить'
+};
+
+function toggleChip(el, key) {
+  el.classList.toggle('active');
+  if (selected.has(key)) selected.delete(key);
+  else selected.add(key);
+  updateWish();
+}
+
+function updateWish() {
+  const wish = document.getElementById('generatedWish');
+  if (selected.size === 0) {
+    wish.textContent = 'Выбери слова выше — и появится твоё пожелание ✨';
+    return;
+  }
+  const parts = [...selected].map(k => wishes[k]);
+  wish.textContent = 'Тётя Александра, ' + parts.join(', ') + '. С 8 марта! 🌸';
+}
+</script>
+</body>
+</html>
